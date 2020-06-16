@@ -1,0 +1,36 @@
+@import b3.vertical.fieldConstructor
+
+@(userOpt: Option[User])(implicit messagesProvider: MessagesProvider, request: RequestHeader)
+
+<header>
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container">
+            // 中略
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    @if(userOpt.isEmpty) {
+                    <li><a href="@routes.SignUpController.index()">@Messages("SignUp")</a></li>
+                    <li><a href="@routes.AuthController.index()">@Messages("LogIn")</a></li>
+                    } else {
+                    <li><a href="#">@Messages("Users")</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @userOpt.get.name <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">@Messages("User")</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                @* ログアウト用のフォームとjavascriptの追加 *@
+                                @b3.formCSRF(routes.AuthController.logout(), 'name -> "logout", 'style -> "display: none") {
+                                @b3.submit() { @Messages("LogOut") }
+                                }
+                                <a href="#" onclick="document.logout.submit();">@Messages("LogOut")</a>
+                            </li>
+                        </ul>
+                    </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
