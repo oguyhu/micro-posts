@@ -41,7 +41,18 @@ libraryDependencies ++= Seq(
   "org.flywaydb"           %% "flyway-play"                  % "4.0.0",
   "jp.t2v"                 %% "play2-auth"                   % "0.16.0-SNAPSHOT",
   "jp.t2v"                 %% "play2-auth-test"              % "0.16.0-SNAPSHOT" % Test,
+  "org.postgresql"         % "postgresql"                    % "42.0.0"
 )
+
+herokuJdkVersion in Compile := "1.8"
+herokuAppName in Compile := "oguyhu-micro-posts"
+herokuProcessTypes in Compile := Map(
+  "web" -> s"target/universal/stage/bin/${normalizedName.value} -Dhttp.port=$$PORT -Dconfig.resource=prod/application.conf -Ddb.default.migration.auto=true"
+)
+herokuConfigVars in Compile := Map(
+  "JAVA_OPTS" -> "-Xmx512m -Xms512m"
+)
+
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"

@@ -13,7 +13,6 @@
 </div>
 } else {
 <div class="row">
-  @* 投稿用フォーム *@
   <aside class="col-md-4">
     @b3.formCSRF(routes.PostController.post()) {
     @b3.textarea(postForm("content"), '_label -> "Content", 'placeholder -> "Content")
