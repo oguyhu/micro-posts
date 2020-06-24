@@ -1,10 +1,10 @@
 package controllers
 
 import java.time.ZonedDateTime
-import javax.inject.{Inject, Singleton}
 
+import javax.inject.{Inject, Singleton}
 import jp.t2v.lab.play2.auth.AuthenticationElement
-import models.MicroPost
+import models.{Favorite, MicroPost}
 import play.api.Logger
 import play.api.data.Forms._
 import play.api.data._
@@ -66,7 +66,7 @@ class PostController @Inject()(val userService: UserService,
     microPostService
       .findAllByWithLimitOffset(Pagination(10, page), user.id.get)
       .map { pagedItems =>
-        BadRequest(views.html.index(Some(user), formWithErrors, pagedItems))
+        BadRequest(views.html.index(Some(user), formWithErrors, List.empty[Favorite], pagedItems))
       }
       .recover {
         case e: Exception =>

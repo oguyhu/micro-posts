@@ -13,4 +13,8 @@ POST    /posts/:id/delete           controllers.PostController.delete(id: Long, 
 GET     /users/:userId/followers    controllers.UsersController.getFollowers(userId: Long, page: Int)
 GET     /users/:userId/followings   controllers.UsersController.getFollowings(userId: Long, page: Int)
 
+POST    /posts/:microPostId/addToFavorites      controllers.FavoriteController.addToFavorites(microPostId: Long)
+POST    /posts/:microPostId/deleteFromFavorites controllers.FavoriteController.deleteFromFavorites(microPostId:Long)
+GET     /posts/:userId/favorites                controllers.FavoritesController.index(userId: Long, page: Int ?= 1)
+
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

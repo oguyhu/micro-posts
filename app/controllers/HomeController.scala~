@@ -8,7 +8,6 @@ import play.api.data.Forms._
 import play.api.data._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import play.api.mvc.Call
 import services.{FavoritesService, MicroPostService, UserService}
 import skinny.Pagination
 

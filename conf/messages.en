@@ -23,3 +23,8 @@ LoggedOut=Logged out
 AuthFailed=Invalid Email or Password
 PasswordInvalid=Mismatch Password with Password(Confirm)
 InternalError=Occurred internal error
+
+AddToFavorites=Add to favorites
+DeleteFromFavorites=Delete from favorites
+Favorites=Favorites
+FavoritesIsEmpty=The list is empty.

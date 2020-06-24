@@ -1,0 +1,14 @@
+@(currentUser: User, favorites: List[Favorite], microPosts: PagedItems[MicroPost])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
+
+@main(Messages("User"), Some(currentUser)) {
+<div class="row">
+    <div class="col-xs-8">
+        @if(microPosts.items.nonEmpty){
+          @common.posts(currentUser, currentUser.id.get, favorites, microPosts, routes.FavoritesController.index(currentUser.id.get, _))
+        }else{
+          <div class="alert alert-info" role="alert">@Messages("FavoritesIsEmpty")</div>
+        }
+    </div>
+</div>
+
+}

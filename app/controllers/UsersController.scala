@@ -6,13 +6,14 @@ import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import services.{MicroPostService, UserFollowService, UserService}
+import services._
 import skinny.Pagination
 
 @Singleton
 class UsersController @Inject()(val userService: UserService,
                                 val microPostService: MicroPostService,
                                 val userFollowService: UserFollowService,
+                                val favoritesService: FavoritesService,
                                 components: ControllerComponents)
   extends AbstractController(components)
     with I18nSupport
@@ -40,15 +41,17 @@ class UsersController @Inject()(val userService: UserService,
     val triedMicroPosts = microPostService.findByUserId(pagination, userId)
     val triedFollowingsSize = userFollowService.countByUserId(userId)
     val triedFollowersSize = userFollowService.countByFollowId(userId)
+    val triedFavorites = favoritesService.findFavoritesByUserId(loggedIn.id.get)
     (for {
       userOpt <- triedUserOpt
       userFollows <- triedUserFollows
       microPosts <- triedMicroPosts
       followingsSize <- triedFollowingsSize
       followersSize <- triedFollowersSize
+      favorites <- triedFavorites
     } yield {
       userOpt.map { user =>
-        Ok(views.html.users.show(loggedIn, user, userFollows, microPosts, followingsSize, followersSize))
+        Ok(views.html.users.show(loggedIn, user, userFollows, microPosts, followingsSize, followersSize, favorites))
       }.get
     }).recover {
       case e: Exception =>

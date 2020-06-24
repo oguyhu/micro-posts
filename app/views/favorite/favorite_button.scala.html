@@ -1,0 +1,17 @@
+@import b3.vertical.fieldConstructor
+
+@(microPost: MicroPost, favorites: List[Favorite])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
+
+@if(!favorites.exists(_.microPostId == microPost.id.get)) {
+  @b3.formCSRF(routes.FavoriteController.addToFavorites(microPost.id.get)) {
+    @b3.submit('class -> "btn btn-info btn-xs") {
+      @Messages("AddToFavorites")
+    }
+  }
+} else {
+  @b3.formCSRF(routes.FavoriteController.deleteFromFavorites(microPost.id.get)) {
+    @b3.submit('class -> "btn btn-warning btn-xs") {
+      @Messages("DeleteFromFavorites")
+    }
+  }
+}

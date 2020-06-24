@@ -23,3 +23,8 @@ LoggedOut=ログアウトしました。
 AuthFailed=メールアドレスもしくはパスワードが不正です。
 PasswordInvalid=パスワードと確認用パスワードが一致しません。
 InternalError=内部エラーが発生しました
+
+AddToFavorites=お気に入りに追加
+DeleteFromFavorites=お気に入りから削除
+Favorites=お気に入り一覧
+FavoritesIsEmpty=リストは空です
