@@ -32,7 +32,9 @@ class FavoritesController @Inject()(val userService: UserService,
   // ページのitemsが0だった場合、前のページがあればそのページを表示する
   def index(userId: Long, page: Int): Action[AnyContent] = StackAction { implicit request =>
     val userOpt = loggedIn
-    userOpt.map { currentUser =>
+    userOpt.fold {
+      Ok(views.html.index(userOpt, postForm, List.empty[Favorite], PagedItems(Pagination(10, page), 0, Seq.empty[MicroPost])))
+    } { currentUser =>
       val pageSize = 10
       val pagination = Pagination(pageSize, page)
       (for {
@@ -52,9 +54,7 @@ class FavoritesController @Inject()(val userService: UserService,
           Redirect(routes.HomeController.index(page))
             .flashing("failure" -> Messages("InternalError"))
       }.getOrElse(InternalServerError(Messages("InternalError")))
-    }.getOrElse(
-      Ok(views.html.index(userOpt, postForm, List.empty[Favorite], PagedItems(Pagination(10, page), 0, Seq.empty[MicroPost])))
-    )
+    }
   }
 
 }

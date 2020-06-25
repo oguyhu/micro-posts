@@ -28,7 +28,9 @@ class HomeController @Inject()(val userService: UserService,
 
   def index(page: Int): Action[AnyContent] = StackAction { implicit request =>
     val userOpt = loggedIn
-    userOpt.map { user =>
+    userOpt.fold {
+      Ok(views.html.index(userOpt, postForm, List.empty[Favorite], PagedItems(Pagination(10, page), 0, Seq.empty[MicroPost])))
+    } { user =>
       val triedFavorites = favoritesService.findFavoritesByUserId(user.id.get)
       val triedPagedItems = microPostService.findAllByWithLimitOffset(Pagination(10, page), user.id.get)
       (for {
@@ -42,9 +44,7 @@ class HomeController @Inject()(val userService: UserService,
           Redirect(routes.HomeController.index(page))
             .flashing("failure" -> Messages("InternalError"))
       }.getOrElse(InternalServerError(Messages("InternalError")))
-    }.getOrElse(
-      Ok(views.html.index(userOpt, postForm, List.empty[Favorite], PagedItems(Pagination(10, page), 0, Seq.empty[MicroPost])))
-    )
+    }
   }
 
 }
